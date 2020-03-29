@@ -12,11 +12,12 @@ _plsdo() {
     esac
 }
 
+declare -A help
+
+help[list]="Print the list of tasks"
 list() {
     declare -F | awk '{print $3}' | grep -v '^_'
 }
-
-declare -A help
 
 _plsdo_max_task_name_width=12
 
@@ -29,6 +30,7 @@ _plsdo_help() {
             return 1
         fi
 
+        # shellcheck disable=SC2059
         printf "\nUsage:\n  $0 $topic\n\n${help[$topic]-}\n"
         return 0
     fi
@@ -36,7 +38,7 @@ _plsdo_help() {
     # print list of tasks and their help line.
     [ -n "${banner-}" ] && echo "$banner" && echo
     for i in $(list); do
-        printf "%-${_plsdo_max_task_name_width}s\t%s\n" $i "${help[$i]-}" | head -1
+        printf "%-${_plsdo_max_task_name_width}s\t%s\n" "$i" "${help[$i]-}" | head -1
     done
 }
 
@@ -60,7 +62,7 @@ such as ~/.bashrc.
     $ ./do _pldsdo_completion >> ~/.bash_complete/do
 '
 _plsdo_completion() {
-    local shell="$(basename $SHELL 2> /dev/null)"
+    local shell; shell="$(basename "$SHELL" 2> /dev/null)"
     case "$shell" in
     bash)
         # FIXME: first word is repeated if tab is pressed again

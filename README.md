@@ -56,8 +56,9 @@ set -o errexit -o nounset -o pipefail
 
 These tasks are provided by `plsdo.sh`.
 
-* `list` - print all tasks with a short description
-* `help` - print a detailed help message for the task
+* `help` - print the help line for all tasks
+* `help TASK` - print a detailed help message for the task
+* `list` - print a list of all tasks
 * `_plsdo_completion` - print `./do` tab completion for $SHELL
 * `_plsdo_error` - echo to stderr instead of stdout
 
