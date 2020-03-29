@@ -2,49 +2,64 @@
 
 Please Do is a tool for automating and standardizing common development tasks.
 
+See [Why not Makefiles?](#why-not-makefiles).
+
 ## Usage
 
 Copy `plsdo.sh` into your project anywhere you want. In this example we will use
 `.plsdo.sh`.
 
-Create a script `do` with some development tasks:
+Create a bash script named `do`:
 
-``
+```
 $ touch do; chmod +x do; git add do
 ```
 
-Write the tasks as bash functions, and source `.plsdo.sh` at the end of the
-file.
+Start by sourcing `.plsdo.sh`, then write tasks as bash functions.
+Call `_plsdo "$@"` at the end of the file.
 
-TODO:
 ```sh
 #!/usr/bin/env bash
 
-declare -A help
+source .plsdo.sh
 
-help_build="Build the binary"
-build() {
+help[binary]="Build the binary"
+binary() {
     go build -o ./dist/app .
 }
 
-. .tasklib
+_plsdo "$@"
 
+```
+
+Finally run the task:
+
+```
+$ ./do binary
 ```
 
 ### Settings
 
-Settings may be set your `./do` after sourcing `plsdo.sh`. The table below
+Settings may be set in `./do` after sourcing `plsdo.sh`. The list below
 shows the default value of settings.
 
+* `_plsdo_max_task_name_width=12` - width used for task names when printing help
+
+The following bash options will be set when `plusdo.sh` is sourced. You may
+choose to unset them after sourcing the file.
+
 ```sh
-_plsdo_max_task_name_width=12  # width used for task names when printing help
+set -o errexit -o nounset -o pipefail
 ```
 
 ### Default Tasks
 
+These tasks are provided by `plsdo.sh`.
+
 * `list` - print all tasks with a short description
 * `help` - print a detailed help message for the task
-* `\_plsdo_completion` - print tab completion for commands for $SHELL
+* `_plsdo_completion` - print `./do` tab completion for $SHELL
+* `_plsdo_error` - echo to stderr instead of stdout
 
 
 ## Why not Makefiles?
