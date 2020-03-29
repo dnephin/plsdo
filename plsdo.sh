@@ -3,29 +3,45 @@
 # version 0.1.0
 set -o errexit -o nounset -o pipefail
 
+_plsdo() {
+    case "${1-}" in
+    ""|help)
+        _plsdo_help "${2-}" ;;
+    *)
+        "$@" ;;
+    esac
+}
+
 list() {
     declare -F | awk '{print $3}' | grep -v '^_'
 }
 
 declare -A help
 
+_plsdo_max_task_name_width=12
+
 _plsdo_help() {
     local topic="${1-}"
+    # print help for the topic
     if [[ -n "$topic" ]]; then
         if ! command -v "$topic" > /dev/null ; then
-            echo "No such task: $topic"
+            _plsdo_error "No such task: $topic"
             return 1
         fi
 
-        local text="${help[$topic]-}"
-        printf "\nUsage:\n  $0 $topic\n\n$text"
+        printf "\nUsage:\n  $0 $topic\n\n${help[$topic]-}\n"
         return 0
     fi
 
+    # print list of tasks and their help line.
     [ -n "${banner-}" ] && echo "$banner" && echo
     for i in $(list); do
-        printf "%-20s\t%s\n" $i "${help[$i]-}" | head -1
+        printf "%-${_plsdo_max_task_name_width}s\t%s\n" $i "${help[$i]-}" | head -1
     done
+}
+
+_plsdo_error() {
+    >&2 echo "$@"
 }
 
 # TODO: where to call this?
@@ -36,10 +52,30 @@ _plsdo_check_bin_in_path() {
     done
 }
 
-_plsdo() {
-    case "${1-}" in
-        ""|help) _plsdo_help "${2-}";;
-        *)  "$@";;
+help[_plsdo_completion]='Print tab completion for $SHELL.
+
+Redirect the output to a file that will be run when the shell starts,
+such as ~/.bashrc.
+
+    $ ./do _pldsdo_completion >> ~/.bash_complete/do
+'
+_plsdo_completion() {
+    local shell="$(basename $SHELL 2> /dev/null)"
+    case "$shell" in
+    bash)
+        # FIXME: first word is repeated if tab is pressed again
+        cat <<+++
+_dotslashdo_completions() {
+COMPREPLY=(\$(compgen -W "\$($0 list)" "\${COMP_WORDS[1]}"))
+}
+complete -F _dotslashdo_completions $0
++++
+        ;;
+    "")
+        _plsdo_error "Set \$SHELL to select tab completion."
+        return 1 ;;
+    *)
+        _plsdo_error "No completetion for shell: $shell"
+        return 1 ;;
     esac
 }
-

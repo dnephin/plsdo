@@ -31,11 +31,20 @@ build() {
 
 ```
 
-## Default Tasks
+### Settings
+
+Settings may be set your `./do` after sourcing `plsdo.sh`. The table below
+shows the default value of settings.
+
+```sh
+_plsdo_max_task_name_width=12  # width used for task names when printing help
+```
+
+### Default Tasks
 
 * `list` - print all tasks with a short description
 * `help` - print a detailed help message for the task
-* `complete` - tab completion for commands
+* `\_plsdo_completion` - print tab completion for commands for $SHELL
 
 
 ## Why not Makefiles?
