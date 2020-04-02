@@ -4,8 +4,8 @@
 # shellcheck disable=SC2034
 help["godoc"]="Run godoc locally to read package documentation.
 
-You may want to use godoc to preview godoc changes, or read godoc for private
-packages.
+You may want to use this task to preview documentation changes, or read godoc
+for private repositories.
 "
 godoc() {
     local url; url="http://localhost:6060/pkg/$(go list)/"

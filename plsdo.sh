@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# plsdo.sh
-# version 0.1.0
+# plsdo.sh, version 0.1.0
 set -o errexit -o nounset -o pipefail
 
 _plsdo() {
@@ -19,7 +18,7 @@ list() {
     declare -F | awk '{print $3}' | grep -v '^_'
 }
 
-_plsdo_max_task_name_width=12
+_plsdo_help_task_name_width="${_plsdo_help_task_name_width:-12}"
 
 _plsdo_help() {
     local topic="${1-}"
@@ -30,15 +29,14 @@ _plsdo_help() {
             return 1
         fi
 
-        # shellcheck disable=SC2059
-        printf "\nUsage:\n  $0 $topic\n\n${help[$topic]-}\n"
+        printf "\nUsage:\n  %s %s\n\n%s\n" "$0" "$topic" "${help[$topic]-}"
         return 0
     fi
 
     # print list of tasks and their help line.
     [ -n "${banner-}" ] && echo "$banner" && echo
     for i in $(list); do
-        printf "%-${_plsdo_max_task_name_width}s\t%s\n" "$i" "${help[$i]-}" | head -1
+        printf "%-${_plsdo_help_task_name_width}s\t%s\n" "$i" "${help[$i]-}" | head -1
     done
 }
 

@@ -1,8 +1,8 @@
 # Please Do
 
-Please Do is a tool for automating and standardizing common development tasks.
+Please Do is a tool for automating and standardizing software development tasks.
 
-See [Why not Makefiles?](#why-not-makefiles).
+See [Why not Makefiles?](#why-not-makefiles)
 
 ## Usage
 
@@ -38,19 +38,14 @@ Finally run the task:
 $ ./do binary
 ```
 
-### Settings
+## Documentation
 
-Settings may be set in `./do` after sourcing `plsdo.sh`. The list below
-shows the default value of settings.
+### Writing Tasks
 
-* `_plsdo_max_task_name_width=12` - width used for task names when printing help
+A task is a regular bash function. Tasks may call other tasks, they are bash functions.
+Tasks may be put into multiple files and sourced from `./do` after `.plsdo.sh`.
 
-The following bash options will be set when `plusdo.sh` is sourced. You may
-choose to unset them after sourcing the file.
-
-```sh
-set -o errexit -o nounset -o pipefail
-```
+To debug a task run `bash -x ./do TASK`.
 
 ### Default Tasks
 
@@ -62,6 +57,38 @@ These tasks are provided by `plsdo.sh`.
 * `_plsdo_completion` - print `./do` tab completion for $SHELL
 * `_plsdo_error` - echo to stderr instead of stdout
 
+
+### Task `help` and `list`
+
+You may add a help message for a task by adding to the `help` associative
+array, using the function name as the key, and the help text as the value.
+The first line will be printed when viewing the help for all tasks (`./do help`),
+and the full multiline help will be printed when asking for detailed help with
+(`./do help TASK`).
+
+The help message should explain what the task does, and include details about
+the arguments, environment variables, binaries, and exit codes used by the task.
+
+Tasks (or functions) which start with underscore will not appear in `help` or
+`list`.
+
+Set the environment variable `banner` to a value to have it printed before any
+tasks in the `help` message.
+
+### Settings
+
+Settings are set as environment variables in `./do` before calling `_plsdo "$@"`. The list below
+shows the default value of all settings.
+
+* `_plsdo_help_task_name_width=12` - width of  the task name column printed by
+  help. Set to a larger value if you have tasks with longer names.
+
+The following bash options will be set when `plusdo.sh` is sourced. You may
+choose to unset them after sourcing the file.
+
+```sh
+set -o errexit -o nounset -o pipefail
+```
 
 ## Why not Makefiles?
 
