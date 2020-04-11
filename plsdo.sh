@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# plsdo.sh, version 0.1.0
+# plsdo.sh, version 0.1.1
 set -o errexit -o nounset -o pipefail
 
-_plsdo() {
+_plsdo_run() {
     case "${1-}" in
     ""|help)
         _plsdo_help "${2-}" ;;

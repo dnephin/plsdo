@@ -16,7 +16,7 @@ $ touch do; chmod +x do; git add do
 ```
 
 Start by sourcing `.plsdo.sh`, then write tasks as bash functions.
-Call `_plsdo "$@"` at the end of the file.
+Call `_plsdo_run "$@"` at the end of the file.
 
 ```sh
 #!/usr/bin/env bash
@@ -28,7 +28,7 @@ binary() {
     go build -o ./dist/app .
 }
 
-_plsdo "$@"
+_plsdo_run "$@"
 
 ```
 

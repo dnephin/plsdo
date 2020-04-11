@@ -20,4 +20,4 @@ check() {
 
 source lib/go.sh
 
-_plsdo "$@"
+_plsdo_run "$@"
