@@ -63,10 +63,11 @@ _plsdo_completion() {
     local shell; shell="$(basename "$SHELL" 2> /dev/null)"
     case "$shell" in
     bash)
-        # FIXME: first word is repeated if tab is pressed again
         cat <<+++
 _dotslashdo_completions() {
-COMPREPLY=(\$(compgen -W "\$($0 list)" "\${COMP_WORDS[1]}"))
+    if ! command -v $0 > /dev/null; then return; fi
+    if [ "\${#COMP_WORDS[@]}" != "2" ]; then return; fi
+    COMPREPLY=(\$(compgen -W "\$($0 list)" "\${COMP_WORDS[1]}"))
 }
 complete -F _dotslashdo_completions $0
 +++
