@@ -44,14 +44,7 @@ _plsdo_error() {
     >&2 echo "$@"
 }
 
-# TODO: where to call this?
-_plsdo_check_bin_in_path() {
-    bins=( awk grep head printf )
-    for b in "${bins[@]}"; do
-        command -v "$b" || echo "Missing $b in \$PATH";
-    done
-}
-
+# shellcheck disable=SC2016
 help[_plsdo_completion]='Print tab completion for $SHELL.
 
 Redirect the output to a file that will be run when the shell starts,

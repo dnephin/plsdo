@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# Common Go tasks
+#
+# Examples of tasks for Go projects
+#
 
-# shellcheck disable=SC2034
-help["godoc"]="Run godoc locally to read package documentation.
+# tell shellcheck about help
+declare -A help; export help
+
+help[godoc]="Run godoc locally to read package documentation.
 
 You may want to use this task to preview documentation changes, or read godoc
 for private repositories.
