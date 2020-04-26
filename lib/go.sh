@@ -19,30 +19,47 @@ godoc() {
 }
 
 
-# Examples
+# TDOO: Examples
 # - cross-compile with parallel
 # - ldflags on binary
-# - version
-# - lint
-# - installing binaries to ./.gotools/bin
-# - tests
 
 
+help[lint]="Run golangci-lint on Go files"
 lint() {
-    # TODO: install to ./.gotools/bin if missing
-    _exec_tool golangci-lint run -v
+    _gotool_install golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint
+    _gotool_run golangci-lint run -v
 }
 
-
-_exec_tool() {
+_gotool_run() {
     PATH="./.gotools/bin:$PATH" "$@"
 }
 
-_install_tool() {
-    local tool; tool="$1"
+_gotool_install() {
+    local cmd; cmd="$1"
+
+    if command -v "$cmd" > /dev/null && [[ -z "${FORCE-}" ]]; then
+        return
+    fi
+
+    local pkg; pkg="$2"
+    mkdir -p .gotools
     (
         set -e
         cd .gotools
-        GOBIN="./bin" go get "$tool"
+        GOBIN="$PWD/bin" go get "$pkg"
     )
+}
+
+help[test]="Run Go tests"
+test() {
+    if command -v gotestsum > /dev/null; then
+        gotestsum "$@"
+        return
+    fi
+    go test "$@"
+}
+
+_version() {
+    local sha; sha="$(git rev-parse --short HEAD)"
+    echo "1.0.1-$sha"
 }

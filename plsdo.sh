@@ -23,7 +23,7 @@ _plsdo_help_task_name_width="${_plsdo_help_task_name_width:-12}"
 _plsdo_help() {
     local topic="${1-}"
     # print help for the topic
-    if [[ -n "$topic" ]]; then
+    if [ -n "$topic" ]; then
         if ! command -v "$topic" > /dev/null ; then
             _plsdo_error "No such task: $topic"
             return 1

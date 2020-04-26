@@ -18,8 +18,8 @@ test_commands() {
 help[shellcheck]="Run shellcheck on all files."
 shellcheck() {
     if ! command -v shellcheck > /dev/null; then
-        _plsdo_error "Missing shellcheck."
-        _plsdo_error "See https://github.com/koalaman/shellcheck#installing"
+        _plsdo_error "shellcheck: command not found"
+        _plsdo_error "Try https://github.com/koalaman/shellcheck#installing"
         return 3
     fi
     command shellcheck -S style ./do ./plsdo.sh lib/*.sh
