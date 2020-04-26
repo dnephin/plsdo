@@ -1,6 +1,6 @@
-# Please Do
+# PlsDo
 
-Please Do is a tool for automating and standardizing software development tasks.
+Pl[ea]s[e ]Do is a tool for automating software development tasks.
 
 See [Why not Makefiles?](#why-not-makefiles)
 
@@ -83,7 +83,7 @@ shows the default value of all settings.
 * `_plsdo_help_task_name_width=12` - width of  the task name column printed by
   help. Set to a larger value if you have tasks with longer names.
 
-The following bash options will be set when `plusdo.sh` is sourced. You may
+The following bash options will be set when `plsdo.sh` is sourced. You may
 choose to unset them after sourcing the file.
 
 ```sh
@@ -92,41 +92,42 @@ set -o errexit -o nounset -o pipefail
 
 ## Why not Makefiles?
 
-Many projects use a Makefile with `.PHONY` targets. While this is a common
-practice there are some disadvantages to that approach.
+Make is a powerful and widely used build automation tool. For decades, it has been an
+indispensable tool for compiling software.
 
-One of the primary features of make is the ability to declare prerequisites
-for a task. The task may not be invoked if the artifact is more recent than
-its dependencies. If you rely heavily on this feature, makefiles are probably
+Make is often used to automate development tasks, such as building a binary. 
+
+X: because it is able to avoid doing work that does not need to be repeated.
+
+X: The automation of development tasks continues to be as important as ever,
+however, the task of avoiding unnecessary work has been taken on by new tools.
+The compiler or interpreter for many modern programming languages handles
+the caching of build artifacts, removing the need for it to be handled by Make.
+
+C: If your project relies heavily on the feature, makefiles are probably
 the right choice.
 
-The toolchain of some modern programming languages, such as Go, already handle
-this type of caching, removing the need for every project to implement it
-themselves.
+X: Projects written in those languages often still use a Makefile to automate
+tasks, by using mostly `.PHONY` targets.
 
-Projects in those languages may end up with a Makefile that is mostly `.PHONY`
-targets, not leveraging that key feature at all.
+X: Make ends up becoming one of the primary CLIs for working with a software
+project, and yet perhaps surprisingly is not well suited to solve that problem.
 
-Makefiles have a number of disavantages as well.
+One of the most essential features of a CLI is to get usage and help
+documentation for the available commands. Listing all the commands, tab
+completion, and support for passing arguments to commands is also quite helpful.
 
-A task to list all targets, or print help for a target is not built in, and
-there is no robust solution to add them.
+Not only does Make not provide these common features, solutions to provide them
+are unintuitive and not robust.
 
-A contributor to your project who needs to add or modify a task must learn the
-Makefile syntax. Bash, while maybe not significantly more approachable, is at
-least more widely used. It is a more complete language, and is imperative,
-making it closer to many other widely used programing languages.
+As a project grows and gets more sophisticated, a Makefile often starts to 
+include inlined, or run, bash scripts. Often one way or another
+bash is being used to handle logic that can't be well expressed by the
+Makefile.
 
-Many sophisticated Makefiles will end up with either embedded bash (requiring
-newline escapes on every line, or many calls to bash scripts.
+Bash, on the other hand, can provide all those coveted features of a CLI,
+and many of the use cases handled by Make, in under 100 lines.
 
-Makefiles do not allow variables to be defined inside of targets, so you end up with a bunch
-of unrelated vars defined at the top of a file, far from where they are used.
-(TODO: is this necessary, or could they be put closer?)
-
-Bash functions can call other bash functions. The imperative call is
-sometimes easier to follow than dependency chains spread out over a file.
-
-When you do have the occasional task that can benefit from the makefile cache,
-you can call `make` from bash and reap the benefit, without the makefile being
-the primary UI to the project tasks.
+Occasionally a project may have one or two tasks that would benefit from the
+features of Make. In those running `make` from Bash gives you all the
+benefits of both.
