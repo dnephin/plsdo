@@ -108,7 +108,7 @@ Projects written in those languages often still use a Makefile to automate
 development tasks, by using mostly `.PHONY` targets. Make has become a common CLIs for
 working with a software project. Surprisingly it is not well suited to solve that problem.
 
-One of the most essential features of a CLI is to provide usage
+Possibly the most essential features of a CLI is to provide usage
 documentation for available commands. Listing commands, tab
 completion, and support for positional arguments are also helpful features of a
 CLI. Make does not provide these features, and solutions to provide them
@@ -116,9 +116,9 @@ from a Makefile are often unreliable.
 
 As a project grows and becomes more sophisticated, a Makefile often starts to
 include inline bash, or executes bash scripts. Bash is being used to handle logic
-that can not be expressed by the native Makefile syntax. Bash, a more general
-purpose language, is quite capable of providing all the essential features of a CLI
-and many of the use cases handled by Make, in under 100 lines.
+that can not be expressed by the native Makefile syntax. Bash is quite capable of providing
+all the essential features of a CLI and many of the use cases handled by Make, in under 100
+lines.
 
 Occasionally a project may have one or two tasks that would benefit from the
 features of Make. In those cases, running `make` from a Bash script gives you all the
