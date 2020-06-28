@@ -23,6 +23,30 @@ godoc() {
 # - cross-compile with parallel
 # - ldflags on binary
 
+# Inspired by https://github.com/jondot/goweight
+binary-weight() {
+    local workdir; workdir=$(set -e; go build -o goweight-bin-target -work -a)
+    find "$workdir" -name importcfg -exec \
+        awk -F'[= ]' '/packagefile/{print $2 " " $3}' {} \; | \
+        sort | uniq | \
+        xargs -n 2 ./do _go_pkgsize | \
+        sort -nr | \
+        xargs -n 2 ./do _go_fmtsize
+}
+
+_go_pkgsize() {
+    local pkg; pkg="$1"
+    local afile; afile="$2"
+    local size; size=$(stat --format="%s" "$afile")
+    echo "$size" "$pkg"
+}
+
+_go_fmtsize() {
+    local bytes; bytes="$1"
+    local pkg; pkg="$2"
+    local size; size=$(numfmt --to=iec-i --suffix=B --padding=7 $bytes)
+    echo "$size" "$pkg"
+}
 
 help[lint]="Run golangci-lint on Go files"
 lint() {
