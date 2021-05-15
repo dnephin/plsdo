@@ -80,7 +80,7 @@ tasks in the `help` message.
 
 ### Settings
 
-Settings are set as environment variables in `./do` before calling `_plsdo "$@"`. The list below
+Settings are set as environment variables in `./do` before calling `_plsdo_run "$@"`. The list below
 shows the default value of all settings.
 
 * `_plsdo_help_task_name_width=12` - width of the task name column printed by
